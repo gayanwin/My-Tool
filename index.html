@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Gayan Hub v3.4.0</title>
+    <title>Gayan Hub v3.5.0</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -17,6 +17,7 @@
         .nav-active i { transform: scale(1.1); }
         input, textarea { font-size: 11px !important; outline: none; border: 1px solid #f1f5f9 !important; transition: 0.2s; }
         input:focus, textarea:focus { border-color: #3b82f6 !important; background: white; }
+        .msg-bubble { background: #eff6ff; border-left: 3px solid #3b82f6; padding: 8px 12px; border-radius: 4px 8px 8px 4px; margin-bottom: 8px; }
     </style>
 </head>
 <body class="pb-24">
@@ -27,8 +28,8 @@
             <p class="text-[9px] text-slate-400 font-medium uppercase tracking-widest">NWSDB O&M Hub</p>
         </div>
         <div class="flex flex-col items-end">
-            <span class="bg-blue-600 text-white px-2.5 py-0.5 rounded-full text-[9px] font-bold shadow-sm">v3.4.0</span>
-            <span class="text-[8px] text-green-500 mt-1 font-bold uppercase tracking-widest italic">Sync Master</span>
+            <span class="bg-blue-600 text-white px-2.5 py-0.5 rounded-full text-[9px] font-bold shadow-sm">v3.5.0</span>
+            <span class="text-[8px] text-indigo-500 mt-1 font-bold uppercase tracking-widest italic">Two-Way Comms</span>
         </div>
     </header>
 
@@ -40,24 +41,31 @@
                     <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Office Memo</p>
                     <i class="fa-solid fa-pen-nib text-blue-500 text-xs"></i>
                 </div>
-                <textarea id="notes" class="w-full h-32 p-4 bg-slate-50 rounded-2xl text-[11px] text-slate-700 resize-none placeholder:text-slate-300" placeholder="Cheque registry or daily tasks..."></textarea>
+                <textarea id="notes" class="w-full h-32 p-4 bg-slate-50 rounded-2xl text-[11px] text-slate-700 resize-none placeholder:text-slate-300" placeholder="Cheque registry details..."></textarea>
                 <div class="grid grid-cols-2 gap-3 mt-4">
                     <button onclick="saveNote()" class="bg-slate-100 text-slate-700 py-3 rounded-xl text-[10px] font-bold active:scale-95 transition">Save Local</button>
-                    <button onclick="syncMemo()" class="bg-blue-600 text-white py-3 rounded-xl text-[10px] font-bold active:scale-95 transition shadow-lg shadow-blue-100">Send To Telegram</button>
+                    <button onclick="syncMemo()" class="bg-blue-600 text-white py-3 rounded-xl text-[10px] font-bold active:scale-95 transition shadow-lg shadow-blue-100">Send (My Chat)</button>
                 </div>
             </div>
         </div>
 
-        <div id="calc" class="tab-content space-y-4">
+        <div id="chat" class="tab-content space-y-4">
             <div class="crystal-card p-5">
-                <p class="text-[10px] font-bold text-orange-500 mb-4 uppercase tracking-widest"><i class="fa-solid fa-shirt mr-2"></i>Profit Calculator</p>
+                <p class="text-[10px] font-bold text-indigo-500 mb-3 uppercase tracking-widest"><i class="fa-solid fa-paper-plane mr-2"></i>Send Direct Message</p>
                 <div class="space-y-3">
-                    <input type="number" id="cost" class="w-full p-3.5 bg-slate-50 rounded-xl placeholder:text-slate-300" placeholder="Cost Price (Rs.)">
-                    <input type="number" id="sell" class="w-full p-3.5 bg-slate-50 rounded-xl placeholder:text-slate-300" placeholder="Selling Price (Rs.)">
-                    <button onclick="calculateAndSync()" class="w-full bg-orange-500 text-white py-4 rounded-xl text-[10px] font-bold shadow-lg shadow-orange-100 active:scale-95 transition">Calculate & Sync</button>
-                    <div id="profit-view" class="hidden text-center pt-4 border-t border-dashed border-slate-100">
-                        <p id="res-val" class="text-xl font-bold text-slate-800"></p>
-                    </div>
+                    <input type="text" id="target-id" class="w-full p-3 bg-slate-50 rounded-xl" placeholder="Receiver's Chat ID (Leave blank for you)">
+                    <textarea id="custom-msg" class="w-full h-16 p-3 bg-slate-50 rounded-xl resize-none" placeholder="Type message to send..."></textarea>
+                    <button onclick="sendCustomMsg()" class="w-full bg-indigo-500 text-white py-3 rounded-xl text-[10px] font-bold shadow-lg shadow-indigo-100 active:scale-95 transition">Send Message</button>
+                </div>
+            </div>
+
+            <div class="crystal-card p-5">
+                <div class="flex justify-between items-center mb-4">
+                    <p class="text-[10px] font-bold text-teal-600 uppercase tracking-widest"><i class="fa-solid fa-inbox mr-2"></i>Live Inbox</p>
+                    <button onclick="fetchInbox()" class="bg-teal-50 text-teal-600 px-3 py-1.5 rounded-lg text-[9px] font-bold active:scale-95"><i class="fa-solid fa-rotate-right mr-1"></i>Refresh</button>
+                </div>
+                <div id="inbox-display" class="min-h-[100px] max-h-[250px] overflow-y-auto p-2 bg-slate-50 rounded-xl border border-slate-100">
+                    <p class="text-center text-slate-400 text-[10px] mt-8">Click Refresh to load messages...</p>
                 </div>
             </div>
         </div>
@@ -75,14 +83,14 @@
 
     </main>
 
-    <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-100 h-20 flex items-center justify-around px-6">
+    <nav class="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-md border-t border-slate-100 h-20 flex items-center justify-around px-2">
         <button onclick="switchTab('home', this)" class="nav-btn nav-active flex flex-col items-center flex-1 py-3 transition-all">
             <i class="fa-solid fa-briefcase text-[16px]"></i>
             <span class="text-[9px] mt-1.5 font-bold uppercase tracking-tighter">Hub</span>
         </button>
-        <button onclick="switchTab('calc', this)" class="nav-btn text-slate-300 flex flex-col items-center flex-1 py-3 transition-all">
-            <i class="fa-solid fa-shirt text-[16px]"></i>
-            <span class="text-[9px] mt-1.5 font-bold uppercase tracking-tighter">Calc</span>
+        <button onclick="switchTab('chat', this)" class="nav-btn text-slate-300 flex flex-col items-center flex-1 py-3 transition-all">
+            <i class="fa-solid fa-comments text-[16px]"></i>
+            <span class="text-[9px] mt-1.5 font-bold uppercase tracking-tighter">Chat</span>
         </button>
         <button onclick="switchTab('telegram', this)" class="nav-btn text-slate-300 flex flex-col items-center flex-1 py-3 transition-all">
             <i class="fa-solid fa-gear text-[16px]"></i>
@@ -97,14 +105,17 @@
             document.getElementById(tabId).classList.add('active');
             btn.classList.add('nav-active');
             btn.classList.remove('text-slate-300');
+            
+            // Auto fetch inbox when opening chat tab
+            if(tabId === 'chat') fetchInbox();
         }
 
-        async function sendToTelegram(message) {
+        async function sendToTelegram(message, specificChatId = null) {
             const token = localStorage.getItem('bot_token');
-            const chatid = localStorage.getItem('chat_id');
-            if(!token || !chatid) return alert("Please check Sync Settings first!");
+            const chatid = specificChatId || localStorage.getItem('chat_id');
+            if(!token || !chatid) return alert("Missing Settings or Chat ID!");
             try {
-                const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatid}&text=${encodeURIComponent(message)}&parse_mode=Markdown`);
+                const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatid}&text=${encodeURIComponent(message)}`);
                 const data = await res.json();
                 return data.ok;
             } catch(e) { return false; }
@@ -112,23 +123,58 @@
 
         async function syncMemo() {
             const note = document.getElementById('notes').value;
-            if(!note) return alert("Empty memo!");
-            const success = await sendToTelegram(`📝 *Office Memo Sync*\n\n${note}`);
-            if(success) alert("Memo Synced to Telegram! 🚀");
-            else alert("Sync Failed! Check settings.");
+            if(!note) return;
+            const success = await sendToTelegram(`📝 *Memo*\n${note}`);
+            if(success) alert("Sent to your Telegram!");
         }
 
-        async function calculateAndSync() {
-            const cost = parseFloat(document.getElementById('cost').value);
-            const sell = parseFloat(document.getElementById('sell').value);
-            if(cost && sell) {
-                const profit = sell - cost;
-                document.getElementById('res-val').innerText = "Rs. " + profit.toLocaleString();
-                document.getElementById('profit-view').classList.remove('hidden');
+        async function sendCustomMsg() {
+            const targetId = document.getElementById('target-id').value.trim();
+            const msg = document.getElementById('custom-msg').value.trim();
+            if(!msg) return alert("Type a message first!");
+            
+            const success = await sendToTelegram(`💬 Message from Gayan Hub:\n\n${msg}`, targetId);
+            if(success) {
+                alert("Message Sent Successfully! 🚀");
+                document.getElementById('custom-msg').value = '';
+            } else {
+                alert("Failed! Check if the Receiver has Started the bot.");
+            }
+        }
+
+        async function fetchInbox() {
+            const token = localStorage.getItem('bot_token');
+            if(!token) return;
+            
+            const display = document.getElementById('inbox-display');
+            display.innerHTML = '<p class="text-center text-slate-400 text-[10px] mt-8"><i class="fa-solid fa-spinner fa-spin mr-2"></i>Loading...</p>';
+            
+            try {
+                // Fetch last 10 updates
+                const res = await fetch(`https://api.telegram.org/bot${token}/getUpdates?offset=-10`);
+                const data = await res.json();
                 
-                const msg = `👕 *Clothing Business Report*\n\nCost: Rs. ${cost.toLocaleString()}\nSell: Rs. ${sell.toLocaleString()}\n*Profit: Rs. ${profit.toLocaleString()}*`;
-                await sendToTelegram(msg);
-                alert("Profit Calculated & Synced! 🚀");
+                if(data.ok && data.result.length > 0) {
+                    let html = '';
+                    // Loop backwards to show newest first
+                    for(let i = data.result.length - 1; i >= 0; i--) {
+                        const m = data.result[i].message;
+                        if(m && m.text) {
+                            const senderName = m.from.first_name || 'Unknown';
+                            const text = m.text;
+                            html += `
+                            <div class="msg-bubble">
+                                <span class="text-[9px] font-bold text-slate-400 block mb-0.5">${senderName}</span>
+                                <span class="text-[11px] text-slate-700">${text}</span>
+                            </div>`;
+                        }
+                    }
+                    display.innerHTML = html || '<p class="text-center text-slate-400 text-[10px] mt-8">No text messages found.</p>';
+                } else {
+                    display.innerHTML = '<p class="text-center text-slate-400 text-[10px] mt-8">No new messages yet.</p>';
+                }
+            } catch(e) {
+                display.innerHTML = '<p class="text-center text-red-400 text-[10px] mt-8">Error loading messages.</p>';
             }
         }
 
@@ -139,14 +185,14 @@
         }
 
         function saveNote() {
-            localStorage.setItem('gayan_note_v4', document.getElementById('notes').value);
-            alert('Note Saved Locally! ✅');
+            localStorage.setItem('gayan_note_v5', document.getElementById('notes').value);
+            alert('Note Saved Locally!');
         }
 
         window.onload = () => {
             document.getElementById('bot-token').value = localStorage.getItem('bot_token') || '';
             document.getElementById('chat-id').value = localStorage.getItem('chat_id') || '';
-            document.getElementById('notes').value = localStorage.getItem('gayan_note_v4') || '';
+            document.getElementById('notes').value = localStorage.getItem('gayan_note_v5') || '';
         }
     </script>
 </body>
