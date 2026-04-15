@@ -3,86 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Gayan's Smart Dashboard</title>
+    <title>Gayan Smart Tool v2</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        body { background-color: #f3f4f6; font-family: sans-serif; -webkit-tap-highlight-color: transparent; }
-        .app-card { background: white; border-radius: 20px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
-        .tab-content { display: none; transition: 0.3s; }
-        .tab-content.active { display: block; }
-        .nav-btn.active { color: #2563eb; transform: scale(1.1); }
+        body { background-color: #f8fafc; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; font-size: 13px; }
+        .app-card { background: white; border-radius: 16px; border: 1px solid #e2e8f0; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .nav-active { color: #2563eb; border-top: 2px solid #2563eb; }
     </style>
 </head>
 <body class="pb-24">
 
-    <div class="bg-blue-600 pt-8 pb-12 px-6 rounded-b-[40px] shadow-lg text-white">
+    <div class="bg-white border-b border-slate-200 pt-6 pb-4 px-5 mb-4">
         <div class="flex justify-between items-center">
             <div>
-                <h1 class="text-xl font-bold">Gayan Chinthaka</h1>
-                <p class="text-blue-100 text-[10px] uppercase tracking-wider">NWSDB O&M Kurunegala</p>
+                <h1 class="text-sm font-bold text-slate-800">Gayan Chinthaka</h1>
+                <p class="text-[10px] text-slate-400 uppercase tracking-tighter">NWSDB O&M Dashboard</p>
             </div>
-            <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center border border-white/30">
-                <i class="fa-solid fa-user"></i>
-            </div>
+            <span class="bg-blue-50 text-blue-600 text-[9px] px-2 py-1 rounded-full font-bold border border-blue-100 italic">SYSTEM ACTIVE</span>
         </div>
     </div>
 
-    <div class="px-5 -mt-6">
+    <div class="px-4">
         
-        <div id="home" class="tab-content active space-y-5">
-            <div class="app-card p-5">
-                <div class="flex items-center mb-3">
-                    <i class="fa-solid fa-pen-nib text-blue-500 mr-2"></i>
-                    <h2 class="font-bold text-gray-800">Office Notes</h2>
-                </div>
-                <textarea id="notes" class="w-full h-32 p-3 bg-gray-50 rounded-xl border-none focus:ring-2 focus:ring-blue-400 text-sm outline-none" placeholder="Cheque details, office tasks..."></textarea>
-                <button onclick="saveNote()" class="w-full mt-3 bg-blue-600 text-white py-3 rounded-xl font-bold active:bg-blue-700 transition">Save Locally</button>
+        <div id="home" class="tab-content active space-y-3">
+            <div class="app-card p-4">
+                <p class="text-[11px] font-semibold text-slate-500 mb-2 uppercase"><i class="fa-solid fa-note-sticky mr-1"></i> Quick Memo</p>
+                <textarea id="notes" class="w-full h-24 p-3 bg-slate-50 rounded-lg border-none focus:ring-1 focus:ring-blue-300 text-xs text-slate-700 outline-none" placeholder="Cheque registry notes..."></textarea>
+                <button onclick="saveNote()" class="w-full mt-2 bg-slate-800 text-white py-2 rounded-lg text-xs font-medium active:scale-95 transition">Save To Device</button>
             </div>
             
+            <div class="app-card p-4">
+                <p class="text-[11px] font-semibold text-slate-500 mb-3 uppercase">Priority Tasks</p>
+                <div class="space-y-2">
+                    <label class="flex items-center p-3 bg-slate-50 rounded-lg cursor-pointer">
+                        <input type="checkbox" class="w-4 h-4 rounded text-blue-600 border-slate-300">
+                        <span class="ml-3 text-xs text-slate-600">Check Cheque Registry</span>
+                    </label>
+                    <label class="flex items-center p-3 bg-slate-50 rounded-lg cursor-pointer">
+                        <input type="checkbox" class="w-4 h-4 rounded text-blue-600 border-slate-300">
+                        <span class="ml-3 text-xs text-slate-600">Stock Update (Clothing)</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div id="telegram" class="tab-content space-y-3">
+            <div class="app-card p-4">
+                <p class="text-[11px] font-semibold text-blue-500 mb-2 uppercase"><i class="fa-brands fa-telegram mr-1"></i> Telegram Sync</p>
+                <div class="bg-blue-50 p-3 rounded-lg border border-blue-100 mb-3">
+                    <p class="text-[11px] text-blue-700 leading-tight">ටෙලිග්‍රෑම් එකෙන් මේ App එකට දත්ත එවන්න Bot Token එක මෙතනට දාන්න.</p>
+                </div>
+                <input type="text" id="bot-token" class="w-full p-3 bg-slate-50 rounded-lg border-none text-xs mb-2" placeholder="Bot Token Here...">
+                <button onclick="checkBot()" class="w-full bg-blue-600 text-white py-2 rounded-lg text-xs font-medium">Connect Bot</button>
+            </div>
+        </div>
+
+        <div id="business" class="tab-content">
             <div class="app-card p-5">
-                <h2 class="font-bold text-gray-800 mb-4 text-green-600">Tasks To-Do</h2>
+                <p class="text-[11px] font-semibold text-orange-500 mb-4 uppercase">Profit Calculator</p>
                 <div class="space-y-3">
-                    <label class="flex items-center p-4 bg-gray-50 rounded-xl border border-gray-100">
-                        <input type="checkbox" class="w-5 h-5 rounded text-blue-600 border-gray-300">
-                        <span class="ml-3 text-sm text-gray-700">Check Cheque Registry</span>
-                    </label>
-                    <label class="flex items-center p-4 bg-gray-50 rounded-xl border border-gray-100">
-                        <input type="checkbox" class="w-5 h-5 rounded text-blue-600 border-gray-300">
-                        <span class="ml-3 text-sm text-gray-700">NWSDB Ledger Update</span>
-                    </label>
-                </div>
-            </div>
-        </div>
-
-        <div id="business" class="tab-content space-y-5">
-            <div class="app-card p-6">
-                <h2 class="font-bold text-orange-600 mb-4"><i class="fa-solid fa-tag mr-2"></i>Profit Calculator</h2>
-                <div class="space-y-4">
-                    <div>
-                        <label class="text-[10px] text-gray-400 uppercase ml-1">Cost Price</label>
-                        <input type="number" id="cost" class="w-full p-4 bg-gray-50 rounded-xl border-none outline-none focus:ring-2 focus:ring-orange-400" placeholder="0.00">
-                    </div>
-                    <div>
-                        <label class="text-[10px] text-gray-400 uppercase ml-1">Selling Price</label>
-                        <input type="number" id="sell" class="w-full p-4 bg-gray-50 rounded-xl border-none outline-none focus:ring-2 focus:ring-orange-400" placeholder="0.00">
-                    </div>
-                    <button onclick="calculateProfit()" class="w-full bg-orange-500 text-white py-4 rounded-xl font-bold shadow-lg active:bg-orange-600 transition">Calculate Profit</button>
-                    <div id="profit-view" class="hidden pt-4 border-t border-dashed border-gray-200 text-center">
-                        <p class="text-gray-500 text-sm">Net Profit</p>
-                        <h3 id="res-val" class="text-2xl font-black text-gray-800">Rs. 0</h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="fuel" class="tab-content space-y-5">
-            <div class="app-card p-6">
-                <h2 class="font-bold text-red-600 mb-4"><i class="fa-solid fa-gas-pump mr-2"></i>Fuel Price Diff</h2>
-                <div class="space-y-4 text-center">
-                    <p class="text-sm text-gray-500 italic">Fuel price tool updating soon...</p>
-                    <div class="p-8 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
-                        <i class="fa-solid fa-clock-rotate-left text-gray-300 text-4xl"></i>
+                    <input type="number" id="cost" class="w-full p-3 bg-slate-50 rounded-lg text-xs border-none outline-none focus:ring-1 focus:ring-orange-300" placeholder="Cost Price">
+                    <input type="number" id="sell" class="w-full p-3 bg-slate-50 rounded-lg text-xs border-none outline-none focus:ring-1 focus:ring-orange-300" placeholder="Selling Price">
+                    <button onclick="calculateProfit()" class="w-full bg-orange-500 text-white py-3 rounded-lg text-xs font-bold">Calculate</button>
+                    <div id="profit-view" class="hidden text-center pt-3 border-t border-slate-100">
+                        <p id="res-val" class="text-lg font-black text-slate-800"></p>
                     </div>
                 </div>
             </div>
@@ -90,39 +78,35 @@
 
     </div>
 
-    <nav class="fixed bottom-4 left-4 right-4 bg-white/90 backdrop-blur-md h-18 rounded-2xl shadow-2xl flex items-center justify-around px-4 border border-white">
-        <button onclick="switchTab('home', this)" class="nav-btn active flex flex-col items-center py-2 transition duration-200">
-            <i class="fa-solid fa-briefcase text-xl"></i>
-            <span class="text-[10px] mt-1 font-bold">Office</span>
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 h-16 flex items-center justify-around px-2 shadow-[0_-4px_10px_rgba(0,0,0,0.03)]">
+        <button onclick="switchTab('home', this)" class="nav-btn active flex flex-col items-center flex-1 py-1">
+            <i class="fa-solid fa-house-user text-lg"></i>
+            <span class="text-[9px] mt-1 font-bold">Office</span>
         </button>
-        <button onclick="switchTab('business', this)" class="nav-btn text-gray-400 flex flex-col items-center py-2 transition duration-200">
-            <i class="fa-solid fa-shirt text-xl"></i>
-            <span class="text-[10px] mt-1 font-bold">Clothing</span>
+        <button onclick="switchTab('telegram', this)" class="nav-btn text-slate-400 flex flex-col items-center flex-1 py-1">
+            <i class="fa-brands fa-telegram text-lg"></i>
+            <span class="text-[9px] mt-1 font-bold">Sync</span>
         </button>
-        <button onclick="switchTab('fuel', this)" class="nav-btn text-gray-400 flex flex-col items-center py-2 transition duration-200">
-            <i class="fa-solid fa-truck-pickup text-xl"></i>
-            <span class="text-[10px] mt-1 font-bold">Vehicle</span>
+        <button onclick="switchTab('business', this)" class="nav-btn text-slate-400 flex flex-col items-center flex-1 py-1">
+            <i class="fa-solid fa-calculator text-lg"></i>
+            <span class="text-[9px] mt-1 font-bold">Calc</span>
         </button>
     </nav>
 
     <script>
         function switchTab(tabId, btn) {
-            // Hide all tabs
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            // Remove active style from all buttons
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active', 'text-blue-600'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.add('text-gray-400'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('nav-active', 'text-blue-600'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.add('text-slate-400'));
 
-            // Show selected tab
             document.getElementById(tabId).classList.add('active');
-            // Set active button
-            btn.classList.add('active', 'text-blue-600');
-            btn.classList.remove('text-gray-400');
+            btn.classList.add('nav-active', 'text-blue-600');
+            btn.classList.remove('text-slate-400');
         }
 
         function saveNote() {
-            localStorage.setItem('gayan_note', document.getElementById('notes').value);
-            alert('Note Saved! ✅');
+            localStorage.setItem('gayan_memo', document.getElementById('notes').value);
+            alert('Memo Updated Locally! ✅');
         }
 
         function calculateProfit() {
@@ -132,13 +116,28 @@
                 const profit = sell - cost;
                 document.getElementById('res-val').innerText = "Rs. " + profit.toLocaleString();
                 document.getElementById('profit-view').classList.remove('hidden');
-            } else {
-                alert("Please enter both prices!");
+            }
+        }
+
+        async function checkBot() {
+            const token = document.getElementById('bot-token').value;
+            if(!token) return alert("Please enter token!");
+            
+            try {
+                const res = await fetch(`https://api.telegram.org/bot${token}/getMe`);
+                const data = await res.json();
+                if(data.ok) {
+                    alert("Connected to: " + data.result.first_name + " ✅");
+                } else {
+                    alert("Invalid Token! ❌");
+                }
+            } catch(e) {
+                alert("Connection Error!");
             }
         }
 
         window.onload = () => {
-            document.getElementById('notes').value = localStorage.getItem('gayan_note') || '';
+            document.getElementById('notes').value = localStorage.getItem('gayan_memo') || '';
         }
     </script>
 </body>
