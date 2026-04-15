@@ -3,129 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Gayan Chinthaka Hub v3.0.0</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&family=IBM+Plex+Mono:wght@300&display=swap" rel="stylesheet">
+    <title>Gayan Hub v3.2.0</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&family=IBM+Plex+Mono:wght@300&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --p-grey: #f7f9fa; --t-blue: #1d4ed8; --t-grey: #64748b; }
-        body { background-color: var(--p-grey); font-family: 'Poppins', sans-serif; -webkit-tap-highlight-color: transparent; font-weight: 300; font-size: 11px; color: #334155; }
-        .app-card { background: white; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
-        .tab-content { display: none; opacity: 0; transition: opacity 0.3s ease; }
-        .tab-content.active { display: block; opacity: 1; }
-        .nav-active { color: var(--t-blue); font-weight: 500; border-top: 2px solid var(--t-blue); }
-        input, textarea, button { font-family: 'Poppins', sans-serif; font-weight: 300; }
-        .mono-text { font-family: 'IBM Plex Mono', monospace; font-weight: 300; }
-        ::-webkit-scrollbar { display: none; } /* Hide all scrollbars */
+        body { background-color: #f8fafc; font-family: 'Poppins', sans-serif; font-size: 11px; color: #334155; }
+        .app-card { background: white; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 1px 2px rgba(0,0,0,0.02); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .nav-active { color: #2563eb; font-weight: 600; border-top: 2px solid #2563eb; }
+        .mono-text { font-family: 'IBM Plex Mono', monospace; }
+        input { outline: none; transition: ring 0.2s; }
+        input:focus { ring: 1px solid #bfdbfe; }
     </style>
 </head>
-<body class="pb-20">
+<body class="pb-24">
 
-    <div class="bg-white border-b border-slate-100 p-4 sticky top-0 z-50">
+    <div class="bg-white border-b border-slate-100 p-4 sticky top-0 z-50 shadow-sm">
         <div class="flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <div class="w-7 h-7 bg-blue-50 rounded-full flex items-center justify-center border border-blue-100 mono-text text-blue-600 text-[10px]">G</div>
-                <div>
-                    <h1 class="text-[12px] font-medium text-slate-900 leading-tight">Gayan Chinthaka Hub</h1>
-                    <p class="text-[10px] text-slate-500 uppercase tracking-tighter">O&M Kurunegala • Stable</p>
-                </div>
+            <div>
+                <h1 class="text-[12px] font-semibold text-slate-900 leading-tight">Gayan Chinthaka Hub</h1>
+                <p class="text-[9px] text-slate-400 uppercase tracking-tight">NWSDB O&M Kurunegala</p>
             </div>
-            <div class="flex items-center space-x-1.5">
-                <span class="text-[10px] mono-text text-amber-500 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100">v3.0.0</span>
-                <i class="fa-solid fa-bell text-slate-400 text-xs"></i>
+            <div class="flex flex-col items-end">
+                <span class="text-[9px] font-bold text-white bg-blue-600 px-2 py-0.5 rounded-full shadow-sm">v3.2.0</span>
+                <span class="text-[8px] text-green-500 font-medium mt-1 uppercase tracking-tighter">System Active</span>
             </div>
         </div>
     </div>
 
-    <div class="px-3 pt-3">
+    <div class="px-3 pt-4">
         
-        <div id="home" class="tab-content active space-y-2.5">
-            <div class="app-card p-3">
-                <p class="text-[10px] font-normal text-slate-400 mb-1.5 uppercase tracking-wide"><i class="fa-solid fa-note-sticky mr-1.5 text-xs text-blue-500"></i> MEMO PAD</p>
-                <textarea id="notes" class="w-full h-20 p-2.5 bg-slate-50 rounded-lg border-none focus:ring-1 focus:ring-blue-100 text-[11px] text-slate-700 outline-none placeholder:text-slate-300" placeholder="Cheque details, quick notes..."></textarea>
-                <button onclick="saveNote()" class="w-auto mt-2 bg-slate-800 text-white px-3 py-1.5 rounded-lg text-[10px] font-medium active:scale-95 transition flex items-center space-x-1.5">
-                    <i class="fa-solid fa-cloud-arrow-down text-[9px]"></i>
-                    <span>Store Locally</span>
-                </button>
-            </div>
-            
-            <div class="app-card p-3">
-                <p class="text-[10px] font-normal text-green-600 bg-green-50 px-2 py-0.5 rounded-md inline-block mb-2 uppercase tracking-wide">Tasks To-Do</p>
-                <div class="space-y-1.5">
-                    <label class="flex items-center p-3 bg-slate-50 rounded-xl cursor-pointer border border-slate-100 hover:border-slate-200 transition">
-                        <input type="checkbox" class="w-3.5 h-3.5 rounded text-blue-600 border-slate-300">
-                        <span class="ml-3 text-[11px] text-slate-600">Check Cheque Registry</span>
-                    </label>
-                    <label class="flex items-center p-3 bg-slate-50 rounded-xl cursor-pointer border border-slate-100 hover:border-slate-200 transition">
-                        <input type="checkbox" class="w-3.5 h-3.5 rounded text-blue-600 border-slate-300">
-                        <span class="ml-3 text-[11px] text-slate-600">Stock Count (Clothing)</span>
-                    </label>
-                </div>
-            </div>
-        </div>
-
-        <div id="telegram" class="tab-content space-y-2.5">
-            <div class="app-card p-3">
-                <p class="text-[10px] font-normal text-blue-500 mb-2 uppercase tracking-wide"><i class="fa-brands fa-telegram mr-1.5 text-sm"></i> Telegram Sync</p>
-                <div class="bg-blue-50/50 p-2 rounded-lg border border-blue-100/50 mb-3">
-                    <p class="text-[10px] text-blue-700 leading-tight">ටෙලිග්‍රෑම් Bot Token එක මෙතනට දාලා Connect කරන්න. ✅</p>
-                </div>
-                <input type="text" id="bot-token" class="w-full p-2.5 bg-slate-50 rounded-lg border-none text-[11px] mb-2 placeholder:text-slate-300" placeholder="paste_bot_token_here...">
-                <button onclick="checkBot()" class="w-full bg-blue-600 text-white py-2 rounded-lg text-[11px] font-medium flex items-center justify-center space-x-1.5 active:scale-95 transition">
-                    <i class="fa-solid fa-link text-[10px]"></i>
-                    <span>Sync Bot Now</span>
-                </button>
-            </div>
-        </div>
-
-        <div id="business" class="tab-content space-y-2.5">
+        <div id="telegram" class="tab-content active space-y-3">
             <div class="app-card p-4">
-                <p class="text-[10px] font-normal text-orange-500 mb-4 uppercase tracking-wide"><i class="fa-solid fa-shirt mr-1.5 text-xs"></i> Clothing Profit Calc</p>
-                <div class="space-y-3">
-                    <div><label class="text-[9px] text-slate-400 uppercase tracking-tighter ml-1">Cost Price</label><input type="number" id="cost" class="w-full p-2.5 bg-slate-50 rounded-lg text-[11px] border-none outline-none focus:ring-1 focus:ring-orange-200 placeholder:text-slate-300" placeholder="0.00"></div>
-                    <div><label class="text-[9px] text-slate-400 uppercase tracking-tighter ml-1">Selling Price</label><input type="number" id="sell" class="w-full p-2.5 bg-slate-50 rounded-lg text-[11px] border-none outline-none focus:ring-1 focus:ring-orange-200 placeholder:text-slate-300" placeholder="0.00"></div>
-                    <button onclick="calculateProfit()" class="w-full bg-orange-500 text-white py-3 rounded-xl text-[11px] font-semibold active:scale-95 transition shadow-sm">Calculate Profit</button>
-                    <div id="profit-view" class="hidden text-center pt-3 border-t border-dashed border-slate-100">
-                        <p id="res-val" class="text-xl font-semibold mono-text text-slate-900"></p>
+                <div class="flex items-center space-x-2 mb-3">
+                    <i class="fa-brands fa-telegram text-blue-500 text-lg"></i>
+                    <p class="text-[10px] font-semibold text-slate-700 uppercase tracking-wide">Sync Dashboard</p>
+                </div>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-[9px] text-slate-400 uppercase font-medium ml-1">Bot API Token</label>
+                        <input type="text" id="bot-token" class="w-full mt-1 p-2.5 bg-slate-50 rounded-lg border-none text-[11px] text-slate-600" placeholder="Paste Token Here">
+                    </div>
+                    
+                    <div>
+                        <label class="text-[9px] text-slate-400 uppercase font-medium ml-1">Your Chat ID</label>
+                        <input type="text" id="chat-id" class="w-full mt-1 p-2.5 bg-slate-50 rounded-lg border-none text-[11px] text-slate-600" placeholder="e.g. 74839201">
+                        <p class="text-[8px] text-slate-400 mt-1 italic leading-tight">* Get Chat ID from @userinfobot on Telegram.</p>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2 pt-1">
+                        <button onclick="checkBot()" class="bg-slate-100 text-slate-700 py-2.5 rounded-lg text-[10px] font-semibold active:scale-95 transition border border-slate-200">Verify Bot</button>
+                        <button onclick="sendTestMsg()" class="bg-blue-600 text-white py-2.5 rounded-lg text-[10px] font-semibold active:scale-95 transition shadow-md shadow-blue-100">Send Test</button>
                     </div>
                 </div>
             </div>
+
+            <div class="p-3 bg-blue-50/50 rounded-xl border border-blue-100">
+                <p class="text-[10px] text-blue-700 leading-normal">
+                    <i class="fa-solid fa-circle-info mr-1"></i>
+                    Telegram එකේ මැසේජ් එන්න නම් Bot එකට ගිහින් <b>/start</b> කරන්න අමතක කරන්න එපා මචං.
+                </p>
+            </div>
         </div>
 
-        <div id="fuel" class="tab-content space-y-2.5">
+        <div id="home" class="tab-content space-y-3">
             <div class="app-card p-4">
-                <p class="text-[10px] font-normal text-red-500 mb-4 uppercase tracking-wide"><i class="fa-solid fa-gas-pump mr-1.5 text-xs"></i> Fuel Price Diff</p>
-                <div class="space-y-3">
-                    <div><label class="text-[9px] text-slate-400 uppercase tracking-tighter ml-1">Old Price</label><input type="number" id="old-price" class="w-full p-2.5 bg-slate-50 rounded-lg text-[11px] border-none outline-none focus:ring-1 focus:ring-red-200 placeholder:text-slate-300" placeholder="0.00"></div>
-                    <div><label class="text-[9px] text-slate-400 uppercase tracking-tighter ml-1">New Price</label><input type="number" id="new-price" class="w-full p-2.5 bg-slate-50 rounded-lg text-[11px] border-none outline-none focus:ring-1 focus:ring-red-200 placeholder:text-slate-300" placeholder="0.00"></div>
-                    <button onclick="calculateFuelDiff()" class="w-full bg-red-600 text-white py-3 rounded-xl text-[11px] font-semibold active:scale-95 transition shadow-sm">Compare Prices</button>
-                    <div id="fuel-view" class="hidden text-center pt-3 border-t border-dashed border-slate-100">
-                        <p id="fuel-res-val" class="text-xl font-semibold mono-text text-red-700"></p>
-                    </div>
-                </div>
+                <p class="text-[10px] font-semibold text-slate-400 mb-3 uppercase tracking-wide">Office Notepad</p>
+                <textarea id="notes" class="w-full h-24 p-3 bg-slate-50 rounded-lg border-none text-[11px] text-slate-700 resize-none" placeholder="Write something..."></textarea>
+                <button onclick="saveNote()" class="mt-3 bg-slate-900 text-white px-4 py-2 rounded-lg text-[10px] font-medium active:scale-95 transition">Save Locally</button>
             </div>
+        </div>
+
+        <div id="business" class="tab-content space-y-3 text-center py-10">
+            <i class="fa-solid fa-screwdriver-wrench text-slate-200 text-4xl"></i>
+            <p class="text-slate-400 text-[10px]">Calculators & Tools loading...</p>
         </div>
 
     </div>
 
-    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-100 h-16 flex items-center justify-around px-2 shadow-[0_-4px_10px_rgba(0,0,0,0.03)]">
-        <button onclick="switchTab('home', this)" class="nav-btn active flex flex-col items-center flex-1 py-1.5 transition">
-            <i class="fa-solid fa-house-user text-[13px] mb-0.5"></i>
-            <span class="text-[9px] mt-0.5 font-normal">Hub</span>
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-100 h-18 flex items-center justify-around px-4 shadow-[0_-4px_12px_rgba(0,0,0,0.03)]">
+        <button onclick="switchTab('home', this)" class="nav-btn text-slate-300 flex flex-col items-center flex-1 py-2">
+            <i class="fa-solid fa-briefcase text-[14px]"></i>
+            <span class="text-[9px] mt-1">Office</span>
         </button>
-        <button onclick="switchTab('telegram', this)" class="nav-btn text-slate-400 flex flex-col items-center flex-1 py-1.5 transition">
-            <i class="fa-brands fa-telegram text-[14px] mb-0.5"></i>
-            <span class="text-[9px] mt-0.5 font-normal">Sync</span>
+        <button onclick="switchTab('telegram', this)" class="nav-btn nav-active flex flex-col items-center flex-1 py-2">
+            <i class="fa-brands fa-telegram text-[16px]"></i>
+            <span class="text-[9px] mt-1">Sync</span>
         </button>
-        <button onclick="switchTab('business', this)" class="nav-btn text-slate-400 flex flex-col items-center flex-1 py-1.5 transition">
-            <i class="fa-solid fa-shirt text-[13px] mb-0.5"></i>
-            <span class="text-[9px] mt-0.5 font-normal">Clothing</span>
-        </button>
-        <button onclick="switchTab('fuel', this)" class="nav-btn text-slate-400 flex flex-col items-center flex-1 py-1.5 transition">
-            <i class="fa-solid fa-gas-pump text-[13px] mb-0.5"></i>
-            <span class="text-[9px] mt-0.5 font-normal">Vehicle</span>
+        <button onclick="switchTab('business', this)" class="nav-btn text-slate-300 flex flex-col items-center flex-1 py-2">
+            <i class="fa-solid fa-chart-pie text-[14px]"></i>
+            <span class="text-[9px] mt-1">Tools</span>
         </button>
     </nav>
 
@@ -133,54 +103,41 @@
         function switchTab(tabId, btn) {
             document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('nav-active', 'text-blue-600'));
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.add('text-slate-400'));
-
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.add('text-slate-300'));
             document.getElementById(tabId).classList.add('active');
             btn.classList.add('nav-active', 'text-blue-600');
-            btn.classList.remove('text-slate-400');
-        }
-
-        function saveNote() {
-            localStorage.setItem('gayan_memo_v3', document.getElementById('notes').value);
-            alert('Updated! ✅ [NWSDB O&M Hub v3.0.0]');
-        }
-
-        function calculateProfit() {
-            const cost = parseFloat(document.getElementById('cost').value);
-            const sell = parseFloat(document.getElementById('sell').value);
-            const view = document.getElementById('profit-view');
-            const res = document.getElementById('res-val');
-            if(cost && sell) {
-                const profit = sell - cost;
-                res.innerText = (profit > 0 ? "+" : "") + "Rs. " + profit.toLocaleString();
-                res.className = (profit >= 0 ? 'text-xl font-semibold mono-text text-orange-600' : 'text-xl font-semibold mono-text text-red-600');
-                view.classList.remove('hidden');
-            } else { alert("Detailed input required!"); }
-        }
-
-        function calculateFuelDiff() {
-            const oldP = parseFloat(document.getElementById('old-price').value);
-            const newP = parseFloat(document.getElementById('new-price').value);
-            const view = document.getElementById('fuel-view');
-            const res = document.getElementById('fuel-res-val');
-            if(oldP && newP) {
-                const diff = newP - oldP;
-                res.innerText = (diff > 0 ? "+" : "") + "Rs. " + diff.toLocaleString();
-                res.className = (diff >= 0 ? 'text-xl font-semibold mono-text text-red-700' : 'text-xl font-semibold mono-text text-green-700');
-                view.classList.remove('hidden');
-            } else { alert("Prices needed!"); }
+            btn.classList.remove('text-slate-300');
         }
 
         async function checkBot() {
             const token = document.getElementById('bot-token').value;
-            if(!token) return alert("Token needed! ⚠️");
-            alert("Connecting to Telegram... [v3.0.0]");
+            if(!token) return alert("Please enter Bot Token!");
             try {
                 const res = await fetch(`https://api.telegram.org/bot${token}/getMe`);
                 const data = await res.json();
-                if(data.ok) { alert("Success! Connected to: " + data.result.first_name + " ✅"); }
-                else { alert("Token Error! ❌"); }
-            } catch(e) { alert("Connection error! [v3.0.0]"); }
+                if(data.ok) alert("✅ Bot is Online: " + data.result.first_name);
+                else alert("❌ Invalid Token!");
+            } catch(e) { alert("⚠️ Connection Error!"); }
+        }
+
+        async function sendTestMsg() {
+            const token = document.getElementById('bot-token').value;
+            const chatid = document.getElementById('chat-id').value;
+            if(!token || !chatid) return alert("Token & Chat ID are required!");
+            
+            const msg = "🚀 *Gayan Hub v3.2.0*\n\nSync is active and working perfectly! ✅";
+            
+            try {
+                const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage?chat_id=${chatid}&text=${encodeURIComponent(msg)}&parse_mode=Markdown`);
+                const data = await res.json();
+                if(data.ok) alert("🚀 Test Message Sent Successfully!");
+                else alert("❌ Error: " + data.description);
+            } catch(e) { alert("⚠️ Failed to reach Telegram."); }
+        }
+
+        function saveNote() {
+            localStorage.setItem('gayan_memo_v3', document.getElementById('notes').value);
+            alert('Note Saved! ✅');
         }
 
         window.onload = () => {
